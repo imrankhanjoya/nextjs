@@ -16,4 +16,5 @@ Deploy the example using [Vercel](https://vercel.com?utm_source=github&utm_mediu
 ## How to use
 
 Clone project and get started.
+ git clone https://github.com/imrankhanjoya/nextjs.git [project name]
 ```
