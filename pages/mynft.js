@@ -20,6 +20,7 @@ if (process.env.NEXT_PUBLIC_WORKSPACE_URL) {
 
 const Mynft = () => {
 	const [nftItems, setNftItems] = useState([])
+	const [connectedms, setConnectedms] = useState(false)
 	const [web3, setWeb3] = useState(null)
 	const [address, setAddress] = useState(null)
 
@@ -30,9 +31,10 @@ const Mynft = () => {
 				setAddress(accounts[0])
 				let w3 = new Web3(ethereum)
 				setWeb3(w3)
+				setConnectedms(true)
 
 			}).catch((err) => console.log(err))
-			: console.log("Please install MetaMask")
+			: setConnectedms(false)
 		nftItemlist()
 
 	}, [])
@@ -75,8 +77,7 @@ const Mynft = () => {
 			<div className="container px-5 py-24 mx-auto">
 				<span>{address}</span>
 				<div className="flex flex-wrap sm:-m-4 -mx-4 -mb-10 -mt-4">
-					{
-						nftItems.map((item, index) => {
+					{connectedms && nftItems.map((item, index) => {
 							return (
 
 								<div key={index} className="p-4 md:w-1/3 sm:mb-0 mb-6">
@@ -94,6 +95,8 @@ const Mynft = () => {
 							)
 						})
 					}
+					{!connectedms && 
+					<div className="p-4 md:w-1/3 sm:mb-0 mb-6">Metamask not connected</div>}
 
 				</div>
 			</div>
