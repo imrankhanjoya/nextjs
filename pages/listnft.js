@@ -10,11 +10,7 @@ const nft_market_address = process.env.MARKET_ADDRESS
 
 import NFT from '../nft.json'
 import NFT_MARKET from '../nft_market.json'
-let rpcEndpoint = null
 
-if (process.env.NEXT_PUBLIC_WORKSPACE_URL) {
-	rpcEndpoint = process.env.NEXT_PUBLIC_WORKSPACE_URL
-}
 
 
 const Listnft = () => {
@@ -52,6 +48,7 @@ const Listnft = () => {
 			const tokenUri = await tokenContract.tokenURI(i.tokenId)
 			// console.log(tokenUri)
 			const meta = await axios.get(tokenUri)
+			console.log(i)
 			let price = ethers.utils.formatUnits(i.price.toString(), 'ether')
 			let item = {
 				price,
@@ -79,8 +76,8 @@ const Listnft = () => {
 					{
 						nftItems.map((item, index) => {
 							return (
-								<div className="p-5">
-									<Nft item={item} key={index}></Nft>
+								<div className="p-5" key={index} >
+									<Nft item={item} ></Nft>
 								</div>
 							)
 						})

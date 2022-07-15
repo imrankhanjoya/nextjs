@@ -64,8 +64,8 @@ const Mynft = () => {
 				<div className="grid grid-cols-4">
 					{nftItems.map((item, index) => {
 						return (
-							<div className="p-5">
-								<Nft item={item} key={index}></Nft>
+							<div className="p-5" key={index}>
+								<Nft item={item} ></Nft>
 							</div>
 						)
 					})
