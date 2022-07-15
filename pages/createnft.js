@@ -3,6 +3,7 @@ import { ethers } from 'ethers'
 import { create as ipfsHttpClient } from 'ipfs-http-client'
 import { useRouter } from 'next/router'
 import Web3Modal from 'web3modal'
+import Connectmessage from '../components/Connectmessage'
 
 const client = ipfsHttpClient(process.env.IPFS_INFURA)
 //const nft_address = '0x2dB2c9D4962A20B0fdDF2A7b407cE01203163e0D'//process.env.NFT_ADD
@@ -152,7 +153,7 @@ const Createnft = () => {
 	)
 	}else{
 		return(
-			<div>Metamask is not connected</div>
+			<Connectmessage></Connectmessage>
 		)
 	}
 }

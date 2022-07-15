@@ -3,6 +3,7 @@ import { ethers } from 'ethers'
 import { create as ipfsHttpClient } from 'ipfs-http-client'
 import axios from 'axios'
 import Web3Modal from 'web3modal'
+import Connectmessage from '../components/Connectmessage'
 
 const client = ipfsHttpClient(process.env.IPFS_INFURA)
 //const nft_address = '0x2dB2c9D4962A20B0fdDF2A7b407cE01203163e0D'//process.env.NFT_ADD
@@ -76,8 +77,9 @@ const Listnft = () => {
 		<>
 			<div className="container px-5 py-24 mx-auto">
 				<span>{address}</span>
-				{!connectedms && 
-					<div className="p-4 md:w-1/3 sm:mb-0 mb-6">Metamask not connected</div>}
+				{!connectedms &&
+					<Connectmessage></Connectmessage>
+				}
 				<div className="flex flex-wrap sm:-m-4 -mx-4 -mb-10 -mt-4">
 					{
 						nftItems.map((item, index) => {
