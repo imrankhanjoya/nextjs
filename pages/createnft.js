@@ -16,6 +16,7 @@ import NFT_MARKET from '../nft_market.json'
 const Createnft = () => {
 	const [fileUrl, setFileUrl] = useState(null)
 	const [connectedms, setConnectedms] = useState(false)
+	const [address, setAddress] = useState(false)
 
 	const [formInput, updateFormInput] = useState({ price: '', name: '', description: '' })
 
