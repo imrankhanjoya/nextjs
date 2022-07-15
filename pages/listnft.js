@@ -1,12 +1,9 @@
 import { useEffect, useState } from "react";
 import { ethers } from 'ethers'
-import { create as ipfsHttpClient } from 'ipfs-http-client'
 import axios from 'axios'
 import Web3Modal from 'web3modal'
 import Connectmessage from '../components/Connectmessage'
 
-const client = ipfsHttpClient(process.env.IPFS_INFURA)
-//const nft_address = '0x2dB2c9D4962A20B0fdDF2A7b407cE01203163e0D'//process.env.NFT_ADD
 const nft_address = process.env.NFT_ADDRESS
 const nft_market_address = process.env.MARKET_ADDRESS
 
@@ -30,9 +27,7 @@ const Listnft = () => {
 	useEffect(() => {
 		window.ethereum ?
 			ethereum.request({ method: "eth_requestAccounts" }).then((accounts) => {
-				setAddress(accounts[0])
-				let w3 = new Web3(ethereum)
-				setWeb3(w3)
+				console.log(accounts[0])
 				setConnectedms(true)
 
 			}).catch((err) => console.log(err))
@@ -76,7 +71,6 @@ const Listnft = () => {
 	return (
 		<>
 			<div className="container px-5 py-24 mx-auto">
-				<span>{address}</span>
 				{!connectedms &&
 					<Connectmessage></Connectmessage>
 				}

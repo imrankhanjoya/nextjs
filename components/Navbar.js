@@ -1,6 +1,20 @@
+import { useState } from 'react'
 import 'tailwindcss/tailwind.css'
+import Web3Modal from 'web3modal'
+import { ethers } from 'ethers'
 
 export default function Navbar() {
+  const [address, setAddress] = useState('Connect metamask')
+
+  if (typeof window !== 'undefined') {
+
+    window.ethereum ?
+      ethereum.request({ method: "eth_requestAccounts" }).then((accounts) => {
+        setAddress(accounts[0])
+      }).catch((err) => console.log(err))
+      : console.log("Not connecteds")
+  }
+
   return (
     <header className="text-gray-600 body-font">
       <div className="container mx-auto flex flex-wrap p-5 flex-col md:flex-row items-center">
@@ -16,7 +30,7 @@ export default function Navbar() {
           <a className="mr-5 hover:text-gray-900" href='/mynft'>My NFT</a>
           <a className="mr-5 hover:text-gray-900" href='/createnft'>Transactions</a>
         </nav>
-        <button className="inline-flex items-center bg-gray-100 border-0 py-1 px-3 focus:outline-none hover:bg-gray-200 rounded text-base mt-4 md:mt-0">Nothing to do
+        <button className="inline-flex items-center bg-gray-100 border-0 py-1 px-3 focus:outline-none hover:bg-gray-200 rounded text-base mt-4 md:mt-0">{address}
           <svg fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" className="w-4 h-4 ml-1" viewBox="0 0 24 24">
             <path d="M5 12h14M12 5l7 7-7 7"></path>
           </svg>
