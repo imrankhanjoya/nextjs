@@ -11,16 +11,25 @@ import NFT_MARKET from '../nft_market.json'
 
 const Nft = ({ item }) => {
 
-	async function makepurchase(nftContract, itemId) {
+	async function makepurchase(nftContract, itemId, price) {
 		const web3Modal = new Web3Modal()
 		const connection = await web3Modal.connect()
 		const provider = new ethers.providers.Web3Provider(connection)
 		const tokenContract = new ethers.Contract(nft_address, NFT, provider)
 		const signer = provider.getSigner()
 
+
 		/* then list the item for sale on the marketplace */
 		const contract = new ethers.Contract(nft_market_address, NFT_MARKET, signer)
-		await contract.createMarketSale(nftContract, itemId)
+		console.log(contract)
+
+		const price = ethers.utils.parseUnits(price.toString(), 'ether')
+
+		await contract.createMarketSale(nftContract, itemId, {
+			value: price,
+			gasLimit: 100000,
+			nonce: undefined,
+		})
 	}
 	return (
 		<>
@@ -29,7 +38,7 @@ const Nft = ({ item }) => {
 			</div>
 			<div className="flex flex-row space-x-5 p-2">
 				<label className="text-green-600">Price: {item.price} eth</label>
-				<button onClick={() => makepurchase(item.nftContract, item.tokenId)} className="inline-flex items-center bg-green-100 border-0 mt-4  px-3 focus:outline-none hover:bg-green-200 rounded text-sm font-bold md:mt-0">Buy</button>
+				<button onClick={() => makepurchase(item.nftContract, item.tokenId, item.price)} className="inline-flex items-center bg-green-100 border-0 mt-4  px-3 focus:outline-none hover:bg-green-200 rounded text-sm font-bold md:mt-0">Buy</button>
 			</div>
 			<div className="flex flex-col">
 				<small className="text-sm break-words	">Seller:{item.seller}</small>
