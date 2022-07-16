@@ -12,9 +12,10 @@ import NFT_MARKET from '../nft_market.json'
 
 
 
-const Mynft = () => {
+const Purchase = () => {
 	const [nftItems, setNftItems] = useState([])
 	const [address, setAddress] = useState('')
+
 
 
 	useEffect(() => {
@@ -35,9 +36,12 @@ const Mynft = () => {
 		});
 		/* then list the item for sale on the marketplace */
 		const contract = new ethers.Contract(nft_market_address, NFT_MARKET, signer)
-		let nftAllItems = await contract.fetchItemsCreated()
+		let nftAllItems = await contract.fetchMyNFTs()
+		console.log(nftAllItems)
 		const items = await Promise.all(nftAllItems.map(async i => {
+			console.log(i)
 			const tokenUri = await tokenContract.tokenURI(i.tokenId)
+			// console.log(tokenUri)
 			const meta = await axios.get(tokenUri)
 			let price = ethers.utils.formatUnits(i.price.toString(), 'ether')
 			let item = {
@@ -62,7 +66,7 @@ const Mynft = () => {
 		<>
 			<div className="container px-5 py-5 mx-auto">
 				<div className="w-full bg-yellow-400 p-5 mb-10 rounded text-center">
-					<label className="text-[40px] text-white font-bold">NFT listed @ {address}</label>
+					<label className="text-[40px] text-white font-bold">NFT purchase @ {address}</label>
 				</div>
 				<div className="grid grid-cols-4">
 					{nftItems.map((item, index) => {
@@ -81,5 +85,5 @@ const Mynft = () => {
 	)
 }
 
-Mynft.layout = 'LD'
-export default Mynft
+Purchase.layout = 'LD'
+export default Purchase
