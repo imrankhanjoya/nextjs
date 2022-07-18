@@ -9,12 +9,14 @@ const nft_market_address = process.env.MARKET_ADDRESS
 
 import NFT from '../nft.json'
 import NFT_MARKET from '../nft_market.json'
+import Loading from "../components/Loading";
 
 
 
 const Mynft = () => {
 	const [nftItems, setNftItems] = useState([])
 	const [address, setAddress] = useState('')
+	const [loading,setLoading] = useState(false)
 
 
 	useEffect(() => {
@@ -25,6 +27,7 @@ const Mynft = () => {
 
 
 	async function nftItemlist() {
+		setLoading(true)
 		const web3Modal = new Web3Modal()
 		const connection = await web3Modal.connect()
 		const provider = new ethers.providers.Web3Provider(connection)
@@ -54,7 +57,7 @@ const Mynft = () => {
 			return item
 		}))
 		setNftItems(items)
-
+		setLoading(false)
 	}
 
 
@@ -65,6 +68,7 @@ const Mynft = () => {
 					<label className="text-[40px] text-white font-bold">NFT listed @ {address}</label>
 				</div>
 				<div className="grid grid-cols-4">
+					{loading && <Loading></Loading>}
 					{nftItems.map((item, index) => {
 						return (
 							<div className="p-5" key={index}>
