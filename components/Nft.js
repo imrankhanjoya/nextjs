@@ -43,7 +43,7 @@ const Nft = ({ item }) => {
 			</div>
 			<div className="flex flex-col">
 				<div className="text-sm break-words">tokenid:{item.tokenId._hex}</div>
-				<div className="text-sm break-words	">Seller:{item.seller}</div>
+				<div className="text-sm break-words	">Seller:<a href={"https://ropsten.etherscan.io/address/"+item.seller} target="_blank" rel="noopener noreferrer">{item.seller}</a></div>
 				<div className="text-sm break-words	">Owner: {item.owner}</div>
 			</div>
 			<h2 className="text-xl font-medium title-font text-gray-900 mt-5">{item.name}</h2>
