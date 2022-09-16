@@ -17,8 +17,8 @@ import { NFTStorage, File } from 'nft.storage'
 const client = ipfsHttpClient(process.env.IPFS_URL)
 const nft_address = process.env.NFT_ADDRESS
 const nft_market_address = process.env.MARKET_ADDRESS
-const web3storageclient = new Web3Storage({ token: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJkaWQ6ZXRocjoweDdmOWY1MDM1QTI1ZkVmNTlCMjcxQzNhMzU3OTc3MzliYWM4MjQ1MjAiLCJpc3MiOiJ3ZWIzLXN0b3JhZ2UiLCJpYXQiOjE2NjMwOTk1NDg0NTYsIm5hbWUiOiJORlRNQVJLRVQifQ.DT0eVMyXxGPnaPh2lx0FZIHLQVq4EtiDK40lH34UjCE' })
-const nftstoragekey = new NFTStorage({ token: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJkaWQ6ZXRocjoweGFlNWNFN2M5NzdGNTMwNEI1OEFhOGIwQzJhZWQyNzE0NTVmNTFFM0QiLCJpc3MiOiJuZnQtc3RvcmFnZSIsImlhdCI6MTYzODc1NTM4MzI0MSwibmFtZSI6Im5mdHByb2ZpbGUifQ.cvkbt7ZsqOcAky88YTOKmmKT6FNjow9dz5K8bPY6kA4'})
+//const web3storageclient = new Web3Storage({ token:NFTSTORAGE })
+const nftstoragekey = new NFTStorage({ token:process.env.NFTSTORAGE_TWO})
 
 
 const Createnft = () => {
