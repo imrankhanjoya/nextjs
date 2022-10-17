@@ -39,23 +39,30 @@ const Purchase = () => {
 		let nftAllItems = await contract.fetchMyNFTs()
 		console.log(nftAllItems)
 		const items = await Promise.all(nftAllItems.map(async i => {
-			console.log(i)
 			const tokenUri = await tokenContract.tokenURI(i.tokenId)
-			// console.log(tokenUri)
-			const meta = await axios.get(tokenUri)
-			let price = ethers.utils.formatUnits(i.price.toString(), 'ether')
-			let item = {
-				price,
-				itemId: i.itemId.toNumber(),
-				seller: i.seller,
-				owner: i.owner,
-				image: meta.data.image,
-				name: meta.data.name,
-				description: meta.data.description,
-				tokenId: i.tokenId,
-				nftContract: i.nftContract,
+			console.log(tokenUri)
+			let position = tokenUri.search("metadata.json");
+			if(position != -1){
+				
+				let price = ethers.utils.formatUnits(i.price.toString(), 'ether')
+				let item = {
+					price,
+					itemId: i.itemId.toNumber(),
+					seller: i.seller,
+					tokenUri:tokenUri,
+					owner: i.owner,
+					image: 'https://api.time.com/wp-content/uploads/2021/03/nft-art-1.jpg?quality=85&w=300',
+					name:"NFT name...",
+					description: "NFT description...",
+					tokenId: i.tokenId._hex,
+					nftContract: i.nftContract,
+				}
+				return item
+				
+			}else{
+				console.log(tokenUri)
+				return false
 			}
-			return item
 		}))
 		setNftItems(items)
 

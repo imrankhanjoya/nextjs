@@ -6,7 +6,7 @@ import Connectmessage from '../components/Connectmessage'
 import Nft from "../components/Nft";
 
 const nft_address = process.env.NFT_ADDRESS
-const nft_market_address = "0x8DC2D4eC286f22fE15EfA0F2a012922BB86DAe29"//process.env.MARKET_ADDRESS
+const nft_market_address = process.env.MARKET_ADDRESS
 
 import NFT from '../nft.json'
 import NFT_MARKET from '../nft_market.json'
@@ -44,9 +44,10 @@ const Listnft = () => {
 		/* then list the item for sale on the marketplace */
 		const contract = new ethers.Contract(nft_market_address, NFT_MARKET, signer)
 		let nftAllItems = await contract.fetchMarketItems()
+		console.log(nftAllItems)
 		const items = await Promise.all(nftAllItems.map(async i => {
 			const tokenUri = await tokenContract.tokenURI(i.tokenId)
-			
+			console.log(tokenUri)
 			let position = tokenUri.search("metadata.json");
 			if(position != -1){
 				

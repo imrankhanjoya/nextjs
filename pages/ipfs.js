@@ -8,7 +8,8 @@ import NFT from '../nft.json'
 import NFT_MARKET from '../nft_market.json'
 import { Web3Storage } from 'web3.storage'
 import { NFTStorage, File } from 'nft.storage'
-
+//https://ipfs.io/ipfs/bafyreicaaf2p5jscph67bhghwsxfwbm2tga4i3xvweec2lnabb7e2rxomy/metadata.json
+//https://ipfs.io/ipfs/Qmd9MCGtdVz2miNumBHDbvj8bigSgTwnr4SbyH6DNnpWdt?filename=1-PUG.json
 //const client = ipfsHttpClient('https://ipfs.infura.io:5001/api/v0')
 //const nft_address = '0x0A36498Fb8E7fdbb0BB04Eb0a659B032963529F8'//process.env.NFT_ADD
 //const nft_market_address = '0xba371bAfafc35b6cCFc51B8F9A70d5Ff60E757f2'//process.env.NFT_ADD
@@ -21,13 +22,13 @@ const nft_market_address = process.env.MARKET_ADDRESS
 const nftstoragekey = new NFTStorage({ token:process.env.NFTSTORAGE_TWO})
 
 
-const Createnft = () => {
+const Ipfs = () => {
 	const [fileObj, setFileObj] = useState()
 	const [msg, setMsg] = useState()
 	const [fileUrl, setFileUrl] = useState(false)
 	const [processing, setProcessing] = useState(false)
 	const [formInput, updateFormInput] = useState({ price: '', name: '', description: '' })
-
+	const [ipfspath,setIpfspath] = useState('')
 	
 
 	async function readfile(){
@@ -64,76 +65,29 @@ const Createnft = () => {
 	}
 	async function createMarket(e) {
 		setMsg("Uploading file to IPFs")
-		const { name, description, price } = formInput
+		const { name,external_url, description, price } = formInput
+		
 		if (!name || !description || !price ){
 			console.log("Information missing ",name,description,price)
 			return
 		} 
 		/* first, upload to IPFS */
 		const data ={
-			name, description, image: fileObj
+			description,external_url,name, image: fileObj
 		}
 		console.log(data)
 		try {
 			const metadata = await nftstoragekey.store(data)			
-			console.log(metadata.url)
+			console.log(metadata)
+			setIpfspath(ipfspath)
 			setMsg("Creating NFT....")
 			/* after file is uploaded to IPFS, pass the URL to save it on Polygon */
-			createSale(metadata.url)
+			//createSale(metadata.url)
 		} catch (error) {
 			console.log('Error uploading file: ', error)
 		}
 	}
 
-	async function testSell() {
-		const web3Modal = new Web3Modal()
-		const connection = await web3Modal.connect()
-		const provider = new ethers.providers.Web3Provider(connection)
-		const signer = provider.getSigner()
-		const price = ethers.utils.parseUnits('0.0025', 'ether')
-
-		let contract = new ethers.Contract(nft_market_address, NFT_MARKET, signer)
-		let listingPrice = await contract.getListingPrice()
-		listingPrice = listingPrice.toString()
-		transaction = await contract.createMarketItem(nft_address, 3, price, { value: listingPrice })
-		await transaction.wait()
-		const myNFTs = await contract.fetchItemsCreated()
-		console.log(myNFTs)
-	}
-
-	async function createSale(url) {
-		setProcessing(true)
-
-		const web3Modal = new Web3Modal()
-		const connection = await web3Modal.connect()
-		const provider = new ethers.providers.Web3Provider(connection)
-		const signer = provider.getSigner()
-		const priceval =  "0.009" //formInput.price
-
-		/* next, create the item */
-		let contract = new ethers.Contract(nft_address, NFT, signer)
-		let transaction = await contract.createToken(url)
-		let tx = await transaction.wait()
-		console.log(tx)
-		let event = tx.events[0]
-		let value = event.args[2]
-		let tokenId = value.toNumber()
-
-
-		const price = ethers.utils.parseUnits(priceval, 'ether')
-		/* then list the item for sale on the marketplace */
-		contract = new ethers.Contract(nft_market_address, NFT_MARKET, signer)
-		let listingPrice = await contract.getListingPrice()
-		listingPrice = listingPrice.toString()
-
-		transaction = await contract.createMarketItem(nft_address, tokenId, price, { value: listingPrice })
-		await transaction.wait()
-		const myNFTs = await contract.fetchItemsCreated()
-		setMsg("Lising  NFT....")
-		console.log(myNFTs)
-		setProcessing(false)
-
-	}
 
 
 	return (
@@ -142,7 +96,7 @@ const Createnft = () => {
 				{/* <button onClick={readfile}>Read data</button> */}
 				<div className="w-1/2 flex flex-col pb-12">
 					<div>{msg}</div>
-					<button onClick={()=>createSale("ipfs://bafyreih6przsxb23eavvavchnj73tqt2tlf4rdhxsbqbupvl3z2crnk6nm/metadata.json")}>Create sale</button>
+					{ipfspath}
 				<input
 						type="file"
 						name="Asset"
@@ -156,11 +110,15 @@ const Createnft = () => {
 						)
 					}
 					<input
-						placeholder="Subscription Name"
+						placeholder="Name"
 						className="mt-8 border rounded p-4"
 						onChange={e => updateFormInput({ ...formInput, name: e.target.value })}
 					/>
-					
+					<input
+						placeholder="external_url"
+						className="mt-8 border rounded p-4"
+						onChange={e => updateFormInput({ ...formInput, external_url: e.target.value })}
+					/>
 					<textarea
 						placeholder="Subscription Description"
 						className="mt-2 border rounded p-4"
@@ -181,5 +139,5 @@ const Createnft = () => {
 	)
 }
 
-Createnft.layout = 'LD'
-export default Createnft
+Ipfs.layout = 'LD'
+export default Ipfs
