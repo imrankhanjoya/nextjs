@@ -85,21 +85,7 @@ const Createnft = () => {
 		}
 	}
 
-	async function testSell() {
-		const web3Modal = new Web3Modal()
-		const connection = await web3Modal.connect()
-		const provider = new ethers.providers.Web3Provider(connection)
-		const signer = provider.getSigner()
-		const price = ethers.utils.parseUnits('0.0025', 'ether')
-
-		let contract = new ethers.Contract(nft_market_address, NFT_MARKET, signer)
-		let listingPrice = await contract.getListingPrice()
-		listingPrice = listingPrice.toString()
-		transaction = await contract.createMarketItem(nft_address, 3, price, { value: listingPrice })
-		await transaction.wait()
-		const myNFTs = await contract.fetchItemsCreated()
-		console.log(myNFTs)
-	}
+	
 
 	async function createSale(url) {
 		setProcessing(true)
